@@ -1,4 +1,1 @@
-*.py linguist-detectable=true
-*.js linguist-detectable=false
-*.html linguist-detectable=false
-*.json linguist-detectable=false
+*.spec linguist-language=Python
