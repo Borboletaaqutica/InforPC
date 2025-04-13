@@ -39,41 +39,60 @@ def get_system_info():
     return info
 
 def atualizar_infos():
+    tree.delete(*tree.get_children())  # Limpa a tabela antes de inserir de novo
     infos = get_system_info()
     for chave, valor in infos.items():
         tree.insert("", "end", values=(chave, valor))
 
-# GUI usando Tkinter
+# --- Estilo retrô ---
+
 root = tk.Tk()
 root.title("Sistema 🖥️")
 root.geometry("800x600")
 root.resizable(False, False)
-root.configure(bg="#1e1e1e")
+root.configure(bg="#C0C0C0")
 
 style = ttk.Style()
 style.theme_use("clam")
-style.configure("Treeview", background="#1e1e1e", foreground="white", fieldbackground="#1e1e1e", rowheight=25)
-style.configure("Treeview.Heading", font=('Segoe UI', 10, 'bold'), foreground="white", background="#333")
-style.configure("TButton", background="#333", foreground="white", font=('Segoe UI', 10, 'bold'))
-style.map("TButton", background=[("active", "#444")])
 
-# Grade da janela principal
+style.configure("Treeview",
+                background="#FFFFFF",
+                foreground="black",
+                fieldbackground="#FFFFFF",
+                rowheight=25,
+                font=('Courier New', 10))
+
+style.configure("Treeview.Heading",
+                font=('Courier New', 10, 'bold'),
+                foreground="black",
+                background="#A0A0A0",
+                relief="raised")
+
+style.configure("TButton",
+                background="#E0E0E0",
+                foreground="black",
+                font=('Courier New', 10, 'bold'),
+                borderwidth=2,
+                relief="raised")
+style.map("TButton",
+          background=[("active", "#D0D0D0")],
+          relief=[("pressed", "sunken")])
+
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
 root.rowconfigure(1, weight=0)
 
-# Treeview para informações
 tree = ttk.Treeview(root, columns=("Tipo", "Valor"), show="headings", style="Treeview")
 tree.heading("Tipo", text="Informação")
 tree.heading("Valor", text="Valor")
 tree.column("Tipo", width=200, anchor="center")
-tree.column("Valor", width=380, anchor="center")
+tree.column("Valor", width=580, anchor="center")
 tree.grid(row=0, column=0, sticky="nsew", padx=20, pady=20)
 
-# Botão para atualizar
-botao = ttk.Button(root, text="Atualizar Informações", command=lambda: [tree.delete(i) for i in tree.get_children()] or atualizar_infos())
-botao.grid(row=1, column=0, columnspan=2, pady=10)
+botao = ttk.Button(root, text="Atualizar Informações", command=atualizar_infos)
+botao.grid(row=1, column=0, pady=10)
 
-# Atualizar
+# Carregar informações assim que iniciar
 atualizar_infos()
+
 root.mainloop()
